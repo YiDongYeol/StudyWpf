@@ -6,19 +6,30 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:WpfNaverNewsSearch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Naver NewsSearch v1.0" Height="450" Width="800">
     <Grid>
-        <Label Content="TEST" FontSize="20" Style="{StaticResource MahApps.Styles.Label}"></Label>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
+
+        <TextBox x:Name="txtSearch" Grid.Row="1" Grid.Column="1" Margin="5"
+                 mah:TextBoxHelper.AutoWatermark="True"
+                 mah:TextBoxHelper.Watermark="뉴스 검색할 단어 입력"
+                 mah:TextBoxHelper.UseFloatingWatermark="True"
+                 mah:TextBoxHelper.ClearTextButton="True"
+                 KeyDown="txtSearch_KeyDown"/>
+
+        <DataGrid x:Name="dgrResult" Grid.Row="2" Grid.Column="1" Margin="5"
+                  IsReadOnly="True" ItemsSource="{Binding}">
+            
+        </DataGrid>
     </Grid>
 </mah:MetroWindow>
