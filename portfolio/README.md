@@ -24,7 +24,7 @@
 
 <br/>
 
-## Naver 영화검색
+## Naver 검색
 - WPF (.NET Framework 4.7.2 / C#)
   - MahApps.Metro UI/Modern UI
   - Newtonsoft.Json
