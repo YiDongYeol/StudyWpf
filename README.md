@@ -17,10 +17,10 @@ C# WPF 학습 리포지토리
 ## Day 3일차
 - 디자인
 - 리소스
-- 네이버 영화 앱 만들기 ([클릭](https://github.com/YiDongYeol/StudyWpf/tree/main/portfolio))
+- 네이버 영화 앱 만들기 ([클릭](https://github.com/YiDongYeol/StudyWpf/tree/main/portfolio#naver-%EC%98%81%ED%99%94%EA%B2%80%EC%83%89))
 
 ## Day 4일차
-- 네이버 영화 앱 마무리 ([클릭](https://github.com/YiDongYeol/StudyWpf/tree/main/portfolio))
+- 네이버 영화 앱 마무리 ([클릭](https://github.com/YiDongYeol/StudyWpf/tree/main/portfolio#naver-%EC%98%81%ED%99%94%EA%B2%80%EC%83%89))
 - 네이버 뉴스검색 
 
 ## Day 5일차
