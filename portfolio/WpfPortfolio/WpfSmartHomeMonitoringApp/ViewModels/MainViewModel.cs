@@ -56,10 +56,33 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
         {
             TaskPopUp();
         }
-        public void StopSubscribe()
+        public void ToolBarStopSubscribe()
         {
-            if(this.ActiveItem is DataBaseViewModel)
+            StopSubscribe();
+        }
+        public void MenuStopSubscribe()
+        {
+            StopSubscribe();
+        }
+        private void StopSubscribe()
+        {
+            if (this.ActiveItem is DataBaseViewModel)
             {
+                DataBaseViewModel activeModel = (this.ActiveItem as DataBaseViewModel);
+                try
+                {
+                    if (Commons.MQTT_CLIENT.IsConnected)
+                    {
+                        Commons.MQTT_CLIENT.MqttMsgPublishReceived -= activeModel.MQTT_CLIENT_MqttMsgPublishReceived;
+                        Commons.MQTT_CLIENT.Disconnect();
+                        activeModel.IsConnected = Commons.IS_CONNECT = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    // Pass
+                }
                 DeactivateItemAsync(this.ActiveItem, true);
             }
         }
