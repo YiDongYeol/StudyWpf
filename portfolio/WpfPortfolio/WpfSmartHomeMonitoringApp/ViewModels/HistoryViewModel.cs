@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using OxyPlot;
+using OxyPlot.Legends;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -21,7 +23,7 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
         private string endDate;
         private string initEndDate;
         private int totalCount;
-        private PlotModel smartHomeModel;   //OxyPlot
+        private PlotModel historyModel;   //OxyPlot : 220613 smartHomeModel -> historyModel 변경
         /*
              * Division
              * DivisionVal
@@ -90,12 +92,12 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
                 NotifyOfPropertyChange(() => TotalCount);
             }
         }
-        public PlotModel SmartHomeModel
+        public PlotModel HistoryModel  // 220613 smartHomeModel -> historyModel 변경
         {
-            get => smartHomeModel; set
+            get => historyModel; set
             {
-                smartHomeModel = value;
-                NotifyOfPropertyChange(() => SmartHomeModel);
+                historyModel = value;
+                NotifyOfPropertyChange(() => HistoryModel);
             }
         }
 
@@ -149,24 +151,24 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(strQuery, conn);
                     string DivisionStr;
-                        switch (SelectedDivision.DivisionVal)
-                        {
-                            case "Dining Room":
-                                DivisionStr = "DNR";
-                                break;
-                            case "Living Room":
-                                DivisionStr = "LVR";
-                                break;
-                            case "BathRoom":
-                                DivisionStr = "BTR";
-                                break;
-                            case "BedRoom":
-                                DivisionStr = "BDR";
-                                break;
-                            default:
-                                DivisionStr = string.Empty;
-                                break;
-                        }
+                    switch (SelectedDivision.DivisionVal)
+                    {
+                        case "Dining Room":
+                            DivisionStr = "DNR";
+                            break;
+                        case "Living Room":
+                            DivisionStr = "LVR";
+                            break;
+                        case "BathRoom":
+                            DivisionStr = "BTR";
+                            break;
+                        case "BedRoom":
+                            DivisionStr = "BDR";
+                            break;
+                        default:
+                            DivisionStr = string.Empty;
+                            break;
+                    }
                     SqlParameter parmDevId = new SqlParameter("@DevId", DivisionStr);
                     SqlParameter parmStartDate = new SqlParameter("@StartDate", StartDate);
                     SqlParameter parmEndDate = new SqlParameter("@EndDate", EndDate);
@@ -175,16 +177,60 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
                     cmd.Parameters.Add(parmEndDate);
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    var i = 0;
+                    int i = 0;
+                    // start of chart process 220613 추가
+                    PlotModel tmp = new PlotModel() 
+                    { 
+                        Title = $"{SelectedDivision.DivisionVal} Histories",
+                        Subtitle = "using OxyPlot"
+                    };  // 임시 플롯모델
+                    LineSeries seriesTemp = new LineSeries() // 온도값을 라인차트로 담을 객체
+                    { 
+                        Color = OxyColor.FromRgb(255,100,100), 
+                        Title = "Temperature", 
+                        MarkerSize = 4,
+                        MarkerType = MarkerType.Circle                        
+                    };
+                    tmp.Legends.Add(new Legend()
+                    {
+                        LegendBorder = OxyColors.Black,
+                        LegendBackground = OxyColor.FromAColor(200,OxyColors.White),
+                        LegendPosition = LegendPosition.TopRight,
+                        LegendPlacement = LegendPlacement.Inside
+                    });
+
+                    LineSeries seriesHumid = new LineSeries() // 습도값을 라인차트로 담을 객체
+                    {
+                        Color = OxyColor.FromRgb(0, 255, 255),
+                        Title = "Humidity",
+                        MarkerSize = 3,
+                        MarkerType = MarkerType.Triangle
+                    };
+
                     while (reader.Read())
                     {
-                        var temp = reader["Temp"];
+                        //var model = new SmartHomeModel(); // 지우는게 나음
+                        //model.DevId = reader["DevId"].ToString();
+                        //model.CurrTime = DateTime.Parse(reader["CurrTime"].ToString());
+                        //model.Temp = Convert.ToDouble(reader["Temp"]);
+                        //model.Humid = Convert.ToDouble(reader["Humid"]);
+
+                        // var temp = reader["Temp"];
+                        // Temp, Humid 차트데이터를 생성
+                        seriesTemp.Points.Add(new DataPoint(i, Convert.ToDouble(reader["Temp"])));
+                        seriesHumid.Points.Add(new DataPoint(i, Convert.ToDouble(reader["Humid"])));
 
                         i++;
                     }
 
-                    TotalCount = i;
+                    TotalCount = i; // 검색한 데이터 총 개수
+
+                    tmp.Series.Add(seriesTemp);
+                    tmp.Series.Add(seriesHumid);
+                    HistoryModel = tmp;
+                    // end of chart process 220613 추가
                 }
+
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error {ex.Message}");

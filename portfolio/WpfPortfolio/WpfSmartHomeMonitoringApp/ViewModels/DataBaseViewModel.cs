@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using WpfSmartHomeMonitoringApp.Helpers;
+using WpfSmartHomeMonitoringApp.Models;
 
 namespace WpfSmartHomeMonitoringApp.ViewModels
 {
@@ -153,14 +154,18 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
         private void SetDataBase(string message, string topic)
         {
             var currDatas = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
-            //fakedata
+            var model = new SmartHomeModel();   // DB 모델 사용
 
             Debug.WriteLine(currDatas);
+            model.DevId = currDatas["DevId"];
+            model.CurrTime = DateTime.Parse(currDatas["CurrTime"]);
+            model.Temp = double.Parse(currDatas["Temp"]);
+            model.Humid = double.Parse(currDatas["Humid"]);
 
             using (SqlConnection conn = new SqlConnection(ConnString))
             {
                 conn.Open();
-
+                // Verbatim string c#
                 string strInQuery = @"INSERT INTO TblSmartHome
                                                 (DevId,
                                                  CurrTime,
@@ -174,10 +179,10 @@ namespace WpfSmartHomeMonitoringApp.ViewModels
                 try
                 {
                     SqlCommand cmd = new SqlCommand(strInQuery, conn);
-                    SqlParameter parmDevId = new SqlParameter("@DevId", currDatas["DevId"]);
-                    SqlParameter parmCurrTime = new SqlParameter("@CurrTime", DateTime.Parse(currDatas["CurrTime"]));
-                    SqlParameter parmTemp = new SqlParameter("@Temp", currDatas["Temp"]);
-                    SqlParameter parmHumid = new SqlParameter("@Humid", currDatas["Humid"]);
+                    SqlParameter parmDevId = new SqlParameter("@DevId", model.DevId);
+                    SqlParameter parmCurrTime = new SqlParameter("@CurrTime", model.CurrTime);
+                    SqlParameter parmTemp = new SqlParameter("@Temp", model.Temp);
+                    SqlParameter parmHumid = new SqlParameter("@Humid", model.Humid);
                     cmd.Parameters.Add(parmDevId);
                     cmd.Parameters.Add(parmCurrTime);
                     cmd.Parameters.Add(parmTemp);
