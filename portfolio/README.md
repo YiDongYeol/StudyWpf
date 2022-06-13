@@ -41,13 +41,24 @@
  - MahApps.Metro
  - Caliburn.Micro
  - LiveCharts
+ - OxyPlot.Wpf
  - M2Mqtt
  - Newtonsoft.Json
- - SQL Server DB
+ - SQL Server DB 
 
 <br/>
 
 ![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeMonitoring.png)
   ###### DB모니터링 화면
+
+<br/>
+
+![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeMonitoring.png)
+  ###### 실시간 센서 디스플레이
+  
+<br/>
+
+![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeMonitoring.png)
+  ###### 센서값 시각화 및 프로그램 정보 창
 
 <br/>
