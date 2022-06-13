@@ -53,12 +53,12 @@
 
 <br/>
 
-![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeMonitoring.png)
+![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeRealTime.png)
   ###### 실시간 센서 디스플레이
   
 <br/>
 
-![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeMonitoring.png)
+![SmartHomeMonitoring](https://raw.githubusercontent.com/YiDongYeol/StudyWpf/main/capture/SmartHomeHistory.PNG)
   ###### 센서값 시각화 및 프로그램 정보 창
 
 <br/>
